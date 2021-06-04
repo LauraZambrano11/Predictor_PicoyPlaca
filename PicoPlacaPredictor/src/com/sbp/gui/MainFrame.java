@@ -17,6 +17,7 @@ import javax.swing.JTextPane;
 import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JMenu;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -51,7 +52,7 @@ public class MainFrame extends JFrame {
 	 */
 	public MainFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 538, 452);
+		setBounds(100, 100, 540, 450);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -61,11 +62,32 @@ public class MainFrame extends JFrame {
 		mnOpciones.setFont(new Font("Arial", Font.PLAIN, 15));
 		menuBar.add(mnOpciones);
 		
+		//Ayuda configuration
 		JMenuItem mntmAyuda = new JMenuItem("Ayuda");
+		mntmAyuda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null,
+						"INSTRUCCIONES:\r\n"
+						+ "\r\n"
+						+ "1. Ingresar la  placa.\r\n"
+						+ "\r\n"
+						+ "2. Ingresar la fecha / Por defecto se establece la fecha actual.\r\n"
+						+ "\r\n"
+						+ "3. Ingresar la hora / Por defecto se establece la hora actual.\r\n"
+						+ "\r\n"
+						+ "4. Click en el botón \"Enviar\"");
+			}
+		});
 		mntmAyuda.setFont(new Font("Arial", Font.PLAIN, 12));
 		mnOpciones.add(mntmAyuda);
 		
+		//Salir configuration
 		JMenuItem mntmSalir = new JMenuItem("Salir");
+		mntmSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		mntmSalir.setFont(new Font("Arial", Font.PLAIN, 12));
 		mnOpciones.add(mntmSalir);
 		contentPane = new JPanel();
@@ -118,9 +140,12 @@ public class MainFrame extends JFrame {
 		txtHora.setBounds(205, 237, 263, 36);
 		contentPane.add(txtHora);
 		
+		//Button configuration
 		JButton btnEnviar = new JButton("Enviar");
 		btnEnviar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Write the button's code here
+				JOptionPane.showMessageDialog(null, "No puede circular");
 			}
 		});
 		btnEnviar.setForeground(Color.DARK_GRAY);
