@@ -20,6 +20,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JMenu;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 import ec.sbp.acciones.Car;
@@ -33,7 +35,7 @@ public class MainFrame extends JFrame {
 	private JTextField txtPlacaLetras;
 	private JTextField txtPlacaNumeros;
 	private JTextField txtHora;
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -73,11 +75,11 @@ public class MainFrame extends JFrame {
 				JOptionPane.showMessageDialog(null,
 						"INSTRUCCIONES:\r\n"
 						+ "\r\n"
-						+ "1. En el primer campo ingresar las letras de la  placa. \r\n"
+						+ "1. En el primer campo ingresar solo las letras de la  placa. \r\n"
 						+ "\r\n"
-						+ "2. En el segundo campo ingresar los números de la  placa. \r\n"
+						+ "2. En el segundo campo ingresar solo los números de la  placa. \r\n"
 						+ "\r\n"
-						+ "3. Ingresar la fecha / Por defecto se establece la fecha actual.\r\n"
+						+ "3. Seleccionar la fecha / Por defecto se establece la fecha actual.\r\n"
 						+ "\r\n"
 						+ "4. Ingresar la hora / Por defecto se establece la hora actual.\r\n"
 						+ "\r\n"
@@ -140,6 +142,10 @@ public class MainFrame extends JFrame {
 		txtHora.setBounds(205, 237, 263, 36);
 		contentPane.add(txtHora);
 		
+		//Date
+		JDateChooser dcFecha = new JDateChooser();
+		dcFecha.setBounds(205, 168, 263, 36);
+		contentPane.add(dcFecha);
 		
 		
 		//Button configuration
@@ -150,14 +156,25 @@ public class MainFrame extends JFrame {
 				//variables
 				String PlacaLetras = txtPlacaLetras.getText();
 				int PlacaNumeros = Integer.parseInt(txtPlacaNumeros.getText());
-				//date
-				java.util.Date fecha = new Date();
-				/*String Fecha = txtFecha.getText();
-				String Hora = txtHora.getText();
-				boolean circula = false;*/
 				
-				//Show a message
-				JOptionPane.showMessageDialog(null, fecha);
+				//date
+				Date date = dcFecha.getDate();
+				Calendar calendario = Calendar.getInstance();
+				calendario.setTime(date);
+				int dia = calendario.get(Calendar.DAY_OF_WEEK);
+				
+				//hour
+				
+				//acción
+				boolean circula = false;
+				Car carro = new Car();
+				circula = carro.Circula(PlacaNumeros, dia);
+				
+				if (circula == true) {
+					JOptionPane.showMessageDialog(null, "Puede Circular");
+				}else {
+					JOptionPane.showMessageDialog(null, "No Puede Circular");
+				}
 			}
 		});
 		btnEnviar.setForeground(Color.DARK_GRAY);
@@ -172,9 +189,6 @@ public class MainFrame extends JFrame {
 		txtPlacaNumeros.setBounds(341, 105, 127, 36);
 		contentPane.add(txtPlacaNumeros);
 		
-		JDateChooser dateChooser = new JDateChooser();
-		dateChooser.setBounds(205, 168, 263, 36);
-		contentPane.add(dateChooser);
 		
 		
 		
