@@ -23,6 +23,8 @@ import java.awt.event.ActionListener;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 import ec.sbp.acciones.Car;
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 
 
 public class MainFrame extends JFrame {
@@ -54,7 +56,7 @@ public class MainFrame extends JFrame {
 	 */
 	public MainFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 540, 444);
+		setBounds(100, 100, 540, 445);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -169,6 +171,10 @@ public class MainFrame extends JFrame {
 		txtPlacaNumeros.setColumns(10);
 		txtPlacaNumeros.setBounds(341, 105, 127, 36);
 		contentPane.add(txtPlacaNumeros);
+		
+		JDateChooser dateChooser = new JDateChooser();
+		dateChooser.setBounds(205, 168, 263, 36);
+		contentPane.add(dateChooser);
 		
 		
 		
