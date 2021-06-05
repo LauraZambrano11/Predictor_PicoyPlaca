@@ -1,4 +1,4 @@
-package com.sbp.gui;
+package ec.sbp.gui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -20,16 +20,18 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JMenu;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.awt.event.ActionEvent;
-import com.sbp.acciones.Circulacion;
+import ec.sbp.acciones.Car;
+
 
 public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtPlaca;
-	private JTextField txtFecha;
+	private JTextField txtPlacaLetras;
+	private JTextField txtPlacaNumeros;
 	private JTextField txtHora;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -52,7 +54,7 @@ public class MainFrame extends JFrame {
 	 */
 	public MainFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 540, 450);
+		setBounds(100, 100, 540, 444);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -69,13 +71,15 @@ public class MainFrame extends JFrame {
 				JOptionPane.showMessageDialog(null,
 						"INSTRUCCIONES:\r\n"
 						+ "\r\n"
-						+ "1. Ingresar la  placa.\r\n"
+						+ "1. En el primer campo ingresar las letras de la  placa. \r\n"
 						+ "\r\n"
-						+ "2. Ingresar la fecha / Por defecto se establece la fecha actual.\r\n"
+						+ "2. En el segundo campo ingresar los números de la  placa. \r\n"
 						+ "\r\n"
-						+ "3. Ingresar la hora / Por defecto se establece la hora actual.\r\n"
+						+ "3. Ingresar la fecha / Por defecto se establece la fecha actual.\r\n"
 						+ "\r\n"
-						+ "4. Click en el botón \"Enviar\"");
+						+ "4. Ingresar la hora / Por defecto se establece la hora actual.\r\n"
+						+ "\r\n"
+						+ "5. Click en el botón \"Enviar\"");
 			}
 		});
 		mntmAyuda.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -122,17 +126,11 @@ public class MainFrame extends JFrame {
 		lblHora.setBounds(44, 236, 127, 36);
 		contentPane.add(lblHora);
 		
-		txtPlaca = new JTextField();
-		txtPlaca.setFont(new Font("Arial", Font.PLAIN, 20));
-		txtPlaca.setBounds(205, 105, 263, 36);
-		contentPane.add(txtPlaca);
-		txtPlaca.setColumns(10);
-		
-		txtFecha = new JTextField();
-		txtFecha.setFont(new Font("Arial", Font.PLAIN, 20));
-		txtFecha.setColumns(10);
-		txtFecha.setBounds(205, 169, 263, 36);
-		contentPane.add(txtFecha);
+		txtPlacaLetras = new JTextField();
+		txtPlacaLetras.setFont(new Font("Arial", Font.PLAIN, 20));
+		txtPlacaLetras.setBounds(205, 105, 127, 36);
+		contentPane.add(txtPlacaLetras);
+		txtPlacaLetras.setColumns(10);
 		
 		txtHora = new JTextField();
 		txtHora.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -140,12 +138,24 @@ public class MainFrame extends JFrame {
 		txtHora.setBounds(205, 237, 263, 36);
 		contentPane.add(txtHora);
 		
+		
+		
 		//Button configuration
 		JButton btnEnviar = new JButton("Enviar");
 		btnEnviar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Write the button's code here
-				JOptionPane.showMessageDialog(null, "No puede circular");
+				//variables
+				String PlacaLetras = txtPlacaLetras.getText();
+				int PlacaNumeros = Integer.parseInt(txtPlacaNumeros.getText());
+				//date
+				java.util.Date fecha = new Date();
+				/*String Fecha = txtFecha.getText();
+				String Hora = txtHora.getText();
+				boolean circula = false;*/
+				
+				//Show a message
+				JOptionPane.showMessageDialog(null, fecha);
 			}
 		});
 		btnEnviar.setForeground(Color.DARK_GRAY);
@@ -153,5 +163,14 @@ public class MainFrame extends JFrame {
 		btnEnviar.setFont(new Font("Arial", Font.BOLD, 15));
 		btnEnviar.setBounds(195, 306, 127, 36);
 		contentPane.add(btnEnviar);
+		
+		txtPlacaNumeros = new JTextField();
+		txtPlacaNumeros.setFont(new Font("Arial", Font.PLAIN, 20));
+		txtPlacaNumeros.setColumns(10);
+		txtPlacaNumeros.setBounds(341, 105, 127, 36);
+		contentPane.add(txtPlacaNumeros);
+		
+		
+		
 	}
 }
