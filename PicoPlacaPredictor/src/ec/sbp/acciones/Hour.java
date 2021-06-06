@@ -11,12 +11,11 @@ public class Hour {
 		} else {b = true;}
 		return b;
 	}
-
+	//transforma en entero un String
 	private int getInt(String valor) {
 		int n = Integer.parseInt(valor);
 		return n;
 	}
-	
 	//validar la circulación por horario
 	public Boolean HoraCirculacion(String hora) {
 		boolean b;

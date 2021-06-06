@@ -2,13 +2,27 @@ package ec.sbp.acciones;
 import ec.sbp.acciones.Hour;
 
 public class Car {
-	//Atributos
-	private String placaLetras;
-	private int placaNumeros;
-	 
-	//Metodo para calcular si puede circular o no
-	public boolean Circula(int placa, int dia, String h) {
-		int ultimoDigito = placa%10; 
+	//Valida la Placa 
+	public boolean ValidaPlaca(String placa) {
+		char []a = placa.toString().toCharArray();
+		if ((a[0]==' ') || (a[1]==' ') || (a[2]==' ') || (a[3]==' ') || (a[4]==' ') || (a[5]==' ') || (a[6]==' ')) {
+			return false;
+		} else {
+			return true;
+		}	
+	}
+	//Devuelve el último dígito
+	public int UltimoNumero(String placa) {
+		char []a = placa.toString().toCharArray();
+		String []c = placa.split("-");
+		int n = Integer.parseInt(c[1]);		
+		int n2 = n%10;
+		return n2;
+	}
+	
+	//Calcula si puede circular o no
+	public boolean Circula(int ultimoDigito, int dia, String h) {
+		//int ultimoDigito = placa%10; 
 		Hour hora = new Hour();
 		boolean puede = hora.HoraCirculacion(h);
 		

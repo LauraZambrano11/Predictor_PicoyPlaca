@@ -31,19 +31,18 @@ import java.util.Date;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
-//Clases
 import ec.sbp.acciones.Car;
 import ec.sbp.acciones.Hour;
 
-public class MainFrame extends JFrame {
 
+public class MainFrame extends JFrame {
+	//Variables Globales
 	private JPanel contentPane;
-	private JTextField txtPlacaLetras;
-	private JTextField txtPlacaNumeros;
 	private JFormattedTextField txtHora;
-	/**
-	 * Launch the application.
-	 */
+	private JFormattedTextField txtPlaca;//////
+	Car carro = new Car();
+	Hour hora = new Hour();
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -57,45 +56,43 @@ public class MainFrame extends JFrame {
 			}
 		});
 	}
-
-	/**
-	 * Create the frame.
-	 */
+	
+	//Inicio de GUI
 	public MainFrame() {
+		//Configuraciones iniciales
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 540, 445);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.DARK_GRAY);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
 		
+		//Configuraciones de la barra menú y sus elementos
 		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
-		
-		JMenu mnOpciones = new JMenu("Opciones");
+		setJMenuBar(menuBar);		
+		JMenu mnOpciones = new JMenu("Opciones"); //Menú opciones
 		mnOpciones.setHorizontalAlignment(SwingConstants.RIGHT);
 		mnOpciones.setFont(new Font("Arial", Font.PLAIN, 15));
-		menuBar.add(mnOpciones);
-		
-		//Ayuda configuration
-		JMenuItem mntmAyuda = new JMenuItem("Ayuda");
+		menuBar.add(mnOpciones);		
+		JMenuItem mntmAyuda = new JMenuItem("Ayuda"); //Item Ayuda que despliega un pequeño manual de uso
 		mntmAyuda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null,
 						"INSTRUCCIONES:\r\n"
 						+ "\r\n"
-						+ "1. En el primer campo ingresar solo las letras de la  placa. \r\n"
+						+ "1. En el primer campo ingresar la  placa. \r\n"
 						+ "\r\n"
-						+ "2. En el segundo campo ingresar solo los números de la  placa. \r\n"
+						+ "2. Seleccionar la fecha en el calendario.\r\n"
 						+ "\r\n"
-						+ "3. Seleccionar la fecha en el calendario.\r\n"
+						+ "3. Escribir la hora. Por defecto esta establecido en 00:00\r\n"
 						+ "\r\n"
-						+ "4. Seleccionar la hora.\r\n"
-						+ "\r\n"
-						+ "5. Click en el botón \"Enviar\"");
+						+ "4. Click en el botón \"Enviar\"");
 			}
 		});
 		mntmAyuda.setFont(new Font("Arial", Font.PLAIN, 12));
 		mnOpciones.add(mntmAyuda);
-		
-		//Salir configuration
-		JMenuItem mntmSalir = new JMenuItem("Salir");
+		JMenuItem mntmSalir = new JMenuItem("Salir");//Item Salir que cierra la app
 		mntmSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -103,43 +100,47 @@ public class MainFrame extends JFrame {
 		});
 		mntmSalir.setFont(new Font("Arial", Font.PLAIN, 12));
 		mnOpciones.add(mntmSalir);
-		contentPane = new JPanel();
-		contentPane.setBackground(Color.DARK_GRAY);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		//Fin de Configuraciones de la barra menú y sus elementos
 		
+		//Configuración de labels
 		JLabel lblTitulo = new JLabel("\"Pico y Placa\" Predictor");
 		lblTitulo.setForeground(Color.WHITE);
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setFont(new Font("Arial", Font.BOLD, 35));
 		lblTitulo.setBackground(Color.WHITE);
 		lblTitulo.setBounds(10, 10, 504, 52);
-		contentPane.add(lblTitulo);
-		
+		contentPane.add(lblTitulo);		
 		JLabel lblPlaca = new JLabel("Placa: ");
 		lblPlaca.setForeground(Color.LIGHT_GRAY);
 		lblPlaca.setFont(new Font("Arial", Font.PLAIN, 25));
 		lblPlaca.setBounds(44, 104, 127, 36);
-		contentPane.add(lblPlaca);
-		
+		contentPane.add(lblPlaca);		
 		JLabel lblFecha = new JLabel("Fecha: ");
 		lblFecha.setForeground(Color.LIGHT_GRAY);
 		lblFecha.setFont(new Font("Arial", Font.PLAIN, 25));
 		lblFecha.setBounds(44, 168, 127, 36);
 		contentPane.add(lblFecha);
-		
 		JLabel lblHora = new JLabel("Hora: ");
 		lblHora.setForeground(Color.LIGHT_GRAY);
 		lblHora.setFont(new Font("Arial", Font.PLAIN, 25));
 		lblHora.setBounds(44, 235, 127, 36);
 		contentPane.add(lblHora);
-		
-		txtPlacaLetras = new JTextField();
-		txtPlacaLetras.setFont(new Font("Arial", Font.PLAIN, 20));
-		txtPlacaLetras.setBounds(205, 105, 127, 36);
-		contentPane.add(txtPlacaLetras);
-		txtPlacaLetras.setColumns(10);
+		//Fin de Configuración de labels
+				
+		/////INICIO DE CONFIGURACIÓN DE CAMPOS DE TEXTO//////
+		//Configuración del campo Placa
+		try {
+			MaskFormatter mascara = new MaskFormatter("???-####");
+			txtPlaca= new JFormattedTextField(mascara);
+			txtPlaca.setHorizontalAlignment(SwingConstants.CENTER);
+			txtPlaca.setFont(new Font("Arial", Font.PLAIN, 15));
+			txtPlaca.setBounds(205, 104, 263, 36);
+			//txtPlaca.setValue(new String ("abc-1234"));
+			contentPane.add(txtPlaca);
+		}
+		catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error"+e);
+		}
 		
 		//Configuración del campo Fecha
 		JDateChooser dcFecha = new JDateChooser();
@@ -150,6 +151,7 @@ public class MainFrame extends JFrame {
 		try {
 		MaskFormatter mascara = new MaskFormatter("##:##");
 		txtHora= new JFormattedTextField(mascara);
+		txtHora.setHorizontalAlignment(SwingConstants.CENTER);
 		txtHora.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtHora.setBounds(205, 235, 263, 36);
 		txtHora.setValue(new String ("00:00"));
@@ -159,41 +161,36 @@ public class MainFrame extends JFrame {
 		catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error"+e);
 		}
+		/////FIN DE CONFIGURACIÓN DE CAMPOS DE TEXTO//////
 		
-		
-		//Botón enviar
+		//Configuración de botón enviar
 		JButton btnEnviar = new JButton("Enviar");
 		btnEnviar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//variables de la placa
-				String PlacaLetras = txtPlacaLetras.getText();
-				int PlacaNumeros = Integer.parseInt(txtPlacaNumeros.getText());
-				
-				//capturar el día
-				Date date = dcFecha.getDate();
-				Calendar calendario = Calendar.getInstance();
-				calendario.setTime(date);
-				int dia = calendario.get(Calendar.DAY_OF_WEEK);
-				
-				//capturar la hora
-				//validar
-				Hour hora = new Hour();
-				String h = txtHora.getText();
-				if(hora.ValidarHora(h)==true) {
-					//acción
-					boolean circula = false;
-					Car carro = new Car();
-					circula = carro.Circula(PlacaNumeros, dia,h);
-										
-					if (circula == true) {
-						JOptionPane.showMessageDialog(null, "Puede Circular");
-					}else {
-						JOptionPane.showMessageDialog(null, "No Puede Circular");
-					}
-				}	else {JOptionPane.showMessageDialog(null, "Hora Inválida");}
-				
-				
-				
+			public void actionPerformed(ActionEvent e) {			
+				int unp = 0;
+				//capturar y validar la placa
+				String placa = txtPlaca.getText();
+				if (carro.ValidaPlaca(placa)==true) {
+					unp = carro.UltimoNumero(placa);
+					//capturar el día
+					Date date = dcFecha.getDate();
+					Calendar calendario = Calendar.getInstance();
+					calendario.setTime(date);
+					int dia = calendario.get(Calendar.DAY_OF_WEEK);				
+					//capturar y validar la hora
+					String h = txtHora.getText();
+					if(hora.ValidarHora(h)==true) {
+						//acción
+						boolean circula = carro.Circula(unp, dia,h);			
+						if (circula == true) {
+							JOptionPane.showMessageDialog(null, "Puede Circular");
+						}else {
+							JOptionPane.showMessageDialog(null, "No Puede Circular");
+						}
+					}	else {JOptionPane.showMessageDialog(null, "Hora Inválida. Ingresar nuevamente.");}
+				}else {
+					JOptionPane.showMessageDialog(null, "Placa Inválida. Ingresar nuevamente.");
+				}									
 			}
 		});
 		btnEnviar.setForeground(Color.DARK_GRAY);
@@ -201,17 +198,6 @@ public class MainFrame extends JFrame {
 		btnEnviar.setFont(new Font("Arial", Font.BOLD, 15));
 		btnEnviar.setBounds(195, 306, 127, 36);
 		contentPane.add(btnEnviar);
-		
-		txtPlacaNumeros = new JTextField();
-		txtPlacaNumeros.setFont(new Font("Arial", Font.PLAIN, 20));
-		txtPlacaNumeros.setColumns(10);
-		txtPlacaNumeros.setBounds(341, 105, 127, 36);
-		contentPane.add(txtPlacaNumeros);
-		
-		
-		
-		
-		
 		
 	}
 }
