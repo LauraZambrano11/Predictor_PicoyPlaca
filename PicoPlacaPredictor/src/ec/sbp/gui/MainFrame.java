@@ -2,16 +2,19 @@ package ec.sbp.gui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Color;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.Color;
+import javax.swing.text.MaskFormatter;
 import javax.swing.JLabel;
-import java.awt.Font;
 import javax.swing.SwingConstants;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JButton;
@@ -19,23 +22,25 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JMenu;
-import java.awt.event.ActionListener;
+import javax.swing.JFormattedTextField;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.awt.event.ActionEvent;
-import ec.sbp.acciones.Car;
+
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
+//Clases
+import ec.sbp.acciones.Car;
+import ec.sbp.acciones.Hour;
 
 public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtPlacaLetras;
 	private JTextField txtPlacaNumeros;
-	private JTextField txtHora;
-
+	private JFormattedTextField txtHora;
 	/**
 	 * Launch the application.
 	 */
@@ -79,9 +84,9 @@ public class MainFrame extends JFrame {
 						+ "\r\n"
 						+ "2. En el segundo campo ingresar solo los números de la  placa. \r\n"
 						+ "\r\n"
-						+ "3. Seleccionar la fecha / Por defecto se establece la fecha actual.\r\n"
+						+ "3. Seleccionar la fecha en el calendario.\r\n"
 						+ "\r\n"
-						+ "4. Ingresar la hora / Por defecto se establece la hora actual.\r\n"
+						+ "4. Seleccionar la hora.\r\n"
 						+ "\r\n"
 						+ "5. Click en el botón \"Enviar\"");
 			}
@@ -127,7 +132,7 @@ public class MainFrame extends JFrame {
 		JLabel lblHora = new JLabel("Hora: ");
 		lblHora.setForeground(Color.LIGHT_GRAY);
 		lblHora.setFont(new Font("Arial", Font.PLAIN, 25));
-		lblHora.setBounds(44, 236, 127, 36);
+		lblHora.setBounds(44, 235, 127, 36);
 		contentPane.add(lblHora);
 		
 		txtPlacaLetras = new JTextField();
@@ -136,45 +141,59 @@ public class MainFrame extends JFrame {
 		contentPane.add(txtPlacaLetras);
 		txtPlacaLetras.setColumns(10);
 		
-		txtHora = new JTextField();
-		txtHora.setFont(new Font("Arial", Font.PLAIN, 20));
-		txtHora.setColumns(10);
-		txtHora.setBounds(205, 237, 263, 36);
-		contentPane.add(txtHora);
-		
-		//Date
+		//Configuración del campo Fecha
 		JDateChooser dcFecha = new JDateChooser();
 		dcFecha.setBounds(205, 168, 263, 36);
 		contentPane.add(dcFecha);
 		
+		//Configuración del campo Hora
+		try {
+		MaskFormatter mascara = new MaskFormatter("##:##");
+		txtHora= new JFormattedTextField(mascara);
+		txtHora.setFont(new Font("Arial", Font.PLAIN, 15));
+		txtHora.setBounds(205, 235, 263, 36);
+		txtHora.setValue(new String ("00:00"));
+		contentPane.add(txtHora);
 		
-		//Button configuration
+		}
+		catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error"+e);
+		}
+		
+		
+		//Botón enviar
 		JButton btnEnviar = new JButton("Enviar");
 		btnEnviar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Write the button's code here
-				//variables
+				//variables de la placa
 				String PlacaLetras = txtPlacaLetras.getText();
 				int PlacaNumeros = Integer.parseInt(txtPlacaNumeros.getText());
 				
-				//date
+				//capturar el día
 				Date date = dcFecha.getDate();
 				Calendar calendario = Calendar.getInstance();
 				calendario.setTime(date);
 				int dia = calendario.get(Calendar.DAY_OF_WEEK);
 				
-				//hour
+				//capturar la hora
+				//validar
+				Hour hora = new Hour();
+				String h = txtHora.getText();
+				if(hora.ValidarHora(h)==true) {
+					//acción
+					boolean circula = false;
+					Car carro = new Car();
+					circula = carro.Circula(PlacaNumeros, dia,h);
+										
+					if (circula == true) {
+						JOptionPane.showMessageDialog(null, "Puede Circular");
+					}else {
+						JOptionPane.showMessageDialog(null, "No Puede Circular");
+					}
+				}	else {JOptionPane.showMessageDialog(null, "Hora Inválida");}
 				
-				//acción
-				boolean circula = false;
-				Car carro = new Car();
-				circula = carro.Circula(PlacaNumeros, dia);
 				
-				if (circula == true) {
-					JOptionPane.showMessageDialog(null, "Puede Circular");
-				}else {
-					JOptionPane.showMessageDialog(null, "No Puede Circular");
-				}
+				
 			}
 		});
 		btnEnviar.setForeground(Color.DARK_GRAY);
@@ -188,6 +207,8 @@ public class MainFrame extends JFrame {
 		txtPlacaNumeros.setColumns(10);
 		txtPlacaNumeros.setBounds(341, 105, 127, 36);
 		contentPane.add(txtPlacaNumeros);
+		
+		
 		
 		
 		
